@@ -1,5 +1,6 @@
 import Post from "../../models/Post";
 import { Request, Response } from "express";
+import Author from "../../models/Author";
 
 export const getPosts = async (req: Request, res: Response) => {
     try {
@@ -12,8 +13,12 @@ export const getPosts = async (req: Request, res: Response) => {
 
 export const createPost = async (req: Request, res: Response) => {
     try {
-        const { title, body } = req.body;
-        const post = await Post.create({ title, body });
+        const { title, body, authorId } = req.body;
+        const author = await Author.findById(authorId)
+        if (!author){
+            res.status(404).json("Author not found.")
+        }
+        const post = await Post.create({ title, body, author });
         res.json(post);
     } catch (error) {
         res.status(500).json({ message: "Error creating post" });

@@ -7,6 +7,14 @@ const postSchema = new Schema({
     body: {
         type: String,
     },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "Author",
+    } ,
+    tags: [{
+        type: Schema.Types.ObjectId,
+        ref: "Tag",
+    }],
 
 });
 
